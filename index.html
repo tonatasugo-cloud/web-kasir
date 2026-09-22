@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laurance Nicolas · laut kreatif</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #c0e0f0 0%, #a2d2e6 40%, #7fb8d4 100%);
+            font-family: 'Quicksand', sans-serif;
+            color: #0a2f44;
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* gelombang laut estetik */
+        body::before {
+            content: "";
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 220px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%233b7ea3" fill-opacity="0.25" d="M0,192L48,197.3C96,203,192,213,288,208C384,203,480,181,576,181.3C672,181,768,203,864,208C960,213,1056,203,1152,186.7C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x bottom;
+            background-size: 800px 220px;
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: 0;
+            animation: waveMove 28s linear infinite;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 160px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%231f5e7a" fill-opacity="0.2" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,218.7C672,235,768,245,864,240C960,235,1056,213,1152,197.3C1248,181,1344,171,1392,165.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x bottom;
+            background-size: 900px 160px;
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+            animation: waveMove 18s linear infinite reverse;
+        }
+
+        @keyframes waveMove {
+            0% {
+                background-position-x: 0;
+            }
+
+            100% {
+                background-position-x: 800px;
+            }
+        }
+
+        /* partikel kecil seperti buih / plankton */
+        .bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.35);
+            border-radius: 50%;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+            animation: floatBubble 14s infinite ease-in-out;
+        }
+
+        @keyframes floatBubble {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0.2;
+            }
+
+            50% {
+                transform: translateY(-30px) scale(1.1);
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.2;
+            }
+        }
+
+        /* kartu utama */
+        .card {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 48px 48px 48px 48px;
+            box-shadow: 0 20px 40px rgba(1, 45, 68, 0.3), 0 8px 24px rgba(1, 45, 68, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+            padding: 2.5rem 2.2rem;
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        /* dekorasi bintang laut mini */
+        .card::before {
+            content: "✦ ✦ ✦";
+            position: absolute;
+            top: -12px;
+            right: 40px;
+            font-size: 1.2rem;
+            letter-spacing: 6px;
+            color: #f0f9ff;
+            text-shadow: 0 0 10px #b3e4ff, 0 0 20px #7ec8e3;
+            opacity: 0.9;
+        }
+
+        /* profil kiri */
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1rem 0.5rem;
+            border-right: 1px dashed rgba(255, 255, 255, 0.8);
+        }
+
+        .avatar-frame {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e0f2fe, #b6d9ec);
+            padding: 6px;
+            box-shadow: 0 15px 25px -8px rgba(2, 62, 92, 0.4), 0 0 0 2px rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .avatar-frame:hover {
+            transform: scale(1.02);
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #267c9e;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="40" r="18" fill="%23f0f9ff" opacity="0.9"/><circle cx="50" cy="75" r="28" fill="%23f0f9ff" opacity="0.9"/><circle cx="35" cy="35" r="4" fill="%230a2f44"/><circle cx="65" cy="35" r="4" fill="%230a2f44"/><path d="M40 50 Q50 58, 60 50" stroke="%230a2f44" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>'), linear-gradient(145deg, #7fc1db, #3e8fb0);
+            background-size: cover, cover;
+            background-position: center;
+            border: 2px solid white;
+        }
+
+        .name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #04364f;
+            margin-bottom: 0.25rem;
+            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.7);
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px);
+            padding: 0.35rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            color: #0a405a;
+            box-shadow: 0 4px 12px rgba(0, 50, 80, 0.15);
+            border: 1px solid white;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .quote {
+            font-style: italic;
+            font-weight: 400;
+            color: #145c7a;
+            font-size: 0.95rem;
+            max-width: 200px;
+            margin: 0 auto 1.5rem;
+            padding: 0.8rem 0.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .social-links a {
+            background: rgba(255, 255, 255, 0.6);
+            width: 42px;
+            height: 42px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0b4b68;
+            font-size: 1.3rem;
+            text-decoration: none;
+            backdrop-filter: blur(4px);
+            border: 1px solid white;
+            box-shadow: 0 6px 12px rgba(0, 50, 80, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .social-links a:hover {
+            background: white;
+            color: #0a6b8f;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 18px rgba(0, 50, 80, 0.2);
+        }
+
+        /* kanan - konten */
+        .content {
+            padding: 0.5rem 0.8rem 0.5rem 0.5rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #04364f;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+            padding-bottom: 0.5rem;
+            text-shadow: 0 2px 8px rgba(255, 255, 255, 0.6);
+        }
+
+        .section-title span {
+            font-size: 1.6rem;
+        }
+
+        .bio {
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 24px;
+            padding: 1.4rem 1.6rem;
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 18px rgba(0, 45, 70, 0.1);
+            margin-bottom: 1.8rem;
+            font-weight: 500;
+            color: #0a3b52;
+        }
+
+        .bio p {
+            margin-bottom: 1rem;
+        }
+
+        .bio p:last-child {
+            margin-bottom: 0;
+        }
+
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 1.8rem;
+        }
+
+        .skill-item {
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(4px);
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #05415e;
+            border: 1px solid white;
+            box-shadow: 0 4px 10px rgba(0, 40, 70, 0.1);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .skill-item:hover {
+            background: rgba(255, 255, 255, 0.85);
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(0, 60, 90, 0.2);
+        }
+
+        .skill-item::before {
+            content: "🪼";
+            font-size: 0.9rem;
+            filter: drop-shadow(0 0 4px #aae0ff);
+        }
+
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 2rem;
+        }
+
+        .project-item {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(4px);
+            border-radius: 18px;
+            padding: 1rem 1.3rem;
+            border-left: 6px solid #5fa8c7;
+            box-shadow: 0 6px 14px rgba(0, 50, 70, 0.1);
+            transition: all 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        .project-item:hover {
+            background: rgba(255, 255, 255, 0.45);
+            border-left-color: #2f7d9e;
+            transform: translateX(6px);
+        }
+
+        .project-title {
+            font-weight: 700;
+            color: #06364b;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .project-title i {
+            font-style: normal;
+            font-size: 1.2rem;
+        }
+
+        .project-desc {
+            font-size: 0.85rem;
+            color: #14546e;
+            font-weight: 500;
+            margin-top: 4px;
+            padding-left: 26px;
+        }
+
+        .footer-note {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #1b5975;
+            text-align: right;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            border-top: 1px solid rgba(255, 255, 255, 0.7);
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .footer-note span {
+            font-size: 1rem;
+            margin-right: 4px;
+        }
+
+        /* responsif */
+        @media (max-width: 850px) {
+            .card {
+                grid-template-columns: 1fr;
+                padding: 2rem 1.5rem;
+            }
+
+            .profile {
+                border-right: none;
+                border-bottom: 1px dashed rgba(255, 255, 255, 0.8);
+                padding-bottom: 1.5rem;
+            }
+
+            .name {
+                font-size: 1.8rem;
+            }
+
+            .avatar-frame {
+                width: 140px;
+                height: 140px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem 0.8rem;
+            }
+
+            .card {
+                padding: 1.5rem 1rem;
+                border-radius: 32px;
+            }
+
+            .bio {
+                padding: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.1rem;
+            }
+
+            .quote {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- gelembung dekoratif -->
+    <div class="bubbles" id="bubbles"></div>
+
+    <!-- kartu portofolio utama -->
+    <div class="card">
+
+        <!-- bagian kiri: profil -->
+        <div class="profile">
+            <div class="avatar-frame">
+                <div class="avatar"></div>
+            </div>
+            <h1 class="name">Laurance Nicolas</h1>
+            <div class="badge">🎨 KOMIKUS & EDITOR</div>
+            <div class="quote">
+                “Setiap garis adalah ombak, setiap cerita adalah samudra.”
+            </div>
+            <div class="social-links">
+                <a href="#" aria-label="Instagram">📸</a>
+                <a href="#" aria-label="Twitter">🐦</a>
+                <a href="#" aria-label="Behance">🎭</a>
+                <a href="#" aria-label="Email">✉️</a>
+            </div>
+        </div>
+
+        <!-- bagian kanan: konten -->
+        <div class="content">
+
+            <div class="section-title">
+                <span>🌊</span> tentang aku
+            </div>
+            <div class="bio">
+                <p>Halo! Aku <strong>Laurance Nicolas</strong>, seorang komikus dan editor yang tinggal di tepi
+                    imajinasi. Aku menciptakan dunia lewat panel, tinta, dan alur cerita yang dalam.</p>
+                <p>Selain menggambar komik, aku juga berpengalaman dalam editing video, desain karakter, dan
+                    storytelling visual. Bagiku, biru laut adalah warna paling jujur — dalam, tenang, tapi penuh
+                    kehidupan.</p>
+            </div>
+
+            <div class="section-title">
+                <span>🐚</span> keahlian
+            </div>
+            <div class="skills-grid">
+                <div class="skill-item">Ilustrasi Komik</div>
+                <div class="skill-item">Editing Video</div>
+                <div class="skill-item">Desain Karakter</div>
+                <div class="skill-item">Storyboard</div>
+                <div class="skill-item">Adobe Photoshop</div>
+                <div class="skill-item">Premiere Pro</div>
+                <div class="skill-item">Clip Studio</div>
+                <div class="skill-item">Color Grading</div>
+            </div>
+
+            <div class="section-title">
+                <span>🧜‍♂️</span> proyek terbaru
+            </div>
+            <div class="project-list">
+                <div class="project-item">
+                    <div class="project-title"><i>📘</i> “Samudra Terakhir”</div>
+                    <div class="project-desc">Komik seri 3 bab — penulis & ilustrator utama.</div>
+                </div>
+                <div class="project-item">
+                    <div class="project-title"><i>🎬</i> Editor “Biru” (film pendek)</div>
+                    <div class="project-desc">Editing, color grading, dan sound design.</div>
+                </div>
+                <div class="project-item">
+                    <div class="project-title"><i>🖌️</i> Zine “Karang Ingatan”</div>
+                    <div class="project-desc">Kolaborasi 5 komikus, aku sebagai editor & layout.</div>
+                </div>
+            </div>
+
+            <div class="footer-note">
+                <span>🌊</span> siap berkolaborasi · laurance.nicolas@ocean.com
+            </div>
+        </div>
+    </div>
+
+    <!-- script untuk gelembung dekoratif acak -->
+    <script>
+        (function () {
+            const bubblesContainer = document.getElementById('bubbles');
+            const bubbleCount = 18;
+
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+
+                const size = Math.random() * 60 + 12; // 12px - 72px
+                const left = Math.random() * 100; // %
+                const top = Math.random() * 100; // %
+                const delay = Math.random() * 12; // detik
+                const duration = Math.random() * 10 + 10; // 10-20 detik
+
+                bubble.style.width = size + 'px';
+                bubble.style.height = size + 'px';
+                bubble.style.left = left + '%';
+                bubble.style.top = top + '%';
+                bubble.style.animationDelay = delay + 's';
+                bubble.style.animationDuration = duration + 's';
+                bubble.style.background = `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(200,235,255,0.4))`;
+                bubble.style.opacity = Math.random() * 0.4 + 0.2;
+
+                bubblesContainer.appendChild(bubble);
+            }
+        })();
+    </script>
+</body>
+
+</html>
