@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Komik · Laurance Nicolas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bangers&family=Quicksand:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(160deg, #0a2f44 0%, #1a5a78 35%, #3e8fb0 70%, #7fc1db 100%);
+            font-family: 'Quicksand', sans-serif;
+            min-height: 100vh;
+            padding: 3rem 1.5rem;
+            color: #eaf6fb;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Efek gelombang bawah */
+        body::before {
+            content: "";
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23001c2c" fill-opacity="0.4" d="M0,192L48,197.3C96,203,192,213,288,208C384,203,480,181,576,181.3C672,181,768,203,864,208C960,213,1056,203,1152,186.7C1248,171,1344,149,1392,138.7L1440,128L1440,320L0,320Z"></path></svg>') repeat-x bottom;
+            background-size: 900px 200px;
+            z-index: 0;
+            animation: waveScroll 25s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes waveScroll {
+            0% {
+                background-position-x: 0;
+            }
+
+            100% {
+                background-position-x: 900px;
+            }
+        }
+
+        /* Bintang laut dekoratif */
+        .sea-stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .sea-stars span {
+            position: absolute;
+            font-size: 1.2rem;
+            opacity: 0.4;
+            animation: twinkle 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 8px #aae0ff);
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.15);
+            }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        .header h1 {
+            font-family: 'Bangers', cursive;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            letter-spacing: 3px;
+            color: #ffffff;
+            text-shadow:
+                3px 3px 0 #0a3b52,
+                6px 6px 0 rgba(0, 40, 60, 0.5),
+                0 0 30px #7fc1db;
+            transform: rotate(-2deg);
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: #c6e8f7;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(0, 30, 50, 0.6);
+        }
+
+        .header p::before,
+        .header p::after {
+            content: "〜";
+            margin: 0 12px;
+            color: #aae0ff;
+        }
+
+        /* Grid panel komik */
+        .comic-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: auto auto;
+            gap: 18px;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* Gaya dasar panel */
+        .panel {
+            background: #f5faff;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+            border: 5px solid #ffffff;
+            box-shadow:
+                0 0 0 3px #0a3b52,
+                10px 10px 0 rgba(10, 59, 82, 0.6),
+                0 20px 40px rgba(0, 20, 40, 0.4);
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.3, 1);
+            cursor: pointer;
+            aspect-ratio: 1 / 1;
+        }
+
+        .panel:hover {
+            transform: translate(-4px, -4px) rotate(-0.5deg);
+            box-shadow:
+                0 0 0 3px #0a3b52,
+                16px 16px 0 rgba(10, 59, 82, 0.7),
+                0 25px 50px rgba(0, 20, 40, 0.5);
+            z-index: 10;
+        }
+
+        /* Ilustrasi dalam panel (SVG background) */
+        .panel-art {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Panel 1 — Ombak & perahu */
+        .panel-1 .panel-art {
+            background:
+                radial-gradient(ellipse at 50% 20%, #cdeeff 0%, #8fc9e4 45%, #3e8fb0 100%);
+            position: relative;
+        }
+
+        .panel-1 .panel-art::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M0,150 Q30,120 60,140 T120,140 T180,135 L200,140 L200,200 L0,200 Z" fill="%23266e91" opacity="0.9"/><path d="M0,165 Q40,140 80,160 T160,158 L200,168 L200,200 L0,200 Z" fill="%230a3b52" opacity="0.85"/><path d="M90,130 L100,90 L110,130 Z" fill="%23ffffff" opacity="0.95"/><path d="M85,130 L115,130 L100,110 Z" fill="%23f0a04b"/><circle cx="150" cy="45" r="20" fill="%23fff4c8" opacity="0.9"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Panel 2 — Bawah laut */
+        .panel-2 .panel-art {
+            background: linear-gradient(180deg, #4aa3c7 0%, #1a5a78 60%, #0a2f44 100%);
+            position: relative;
+        }
+
+        .panel-2 .panel-art::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M30,180 Q20,140 40,110 Q60,80 50,50 Q45,30 60,20" stroke="%235db88a" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M160,190 Q170,150 155,120 Q140,90 155,60" stroke="%235db88a" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="80" cy="80" r="6" fill="%23ffe066" opacity="0.8"/><circle cx="120" cy="110" r="4" fill="%23ffe066" opacity="0.7"/><circle cx="60" cy="130" r="5" fill="%23ffe066" opacity="0.6"/><ellipse cx="100" cy="70" rx="18" ry="12" fill="%23ffb347" opacity="0.9"/><path d="M118,70 L130,62 L130,78 Z" fill="%23ffb347"/><circle cx="94" cy="67" r="2" fill="%230a2f44"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Panel 3 — Karakter */
+        .panel-3 .panel-art {
+            background: radial-gradient(circle at 50% 40%, #ffe9b8 0%, #f7c873 40%, #e89a3c 100%);
+            position: relative;
+        }
+
+        .panel-3 .panel-art::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="80" r="35" fill="%23f5deb3"/><ellipse cx="100" cy="150" rx="45" ry="40" fill="%231a5a78"/><circle cx="88" cy="75" r="4" fill="%230a2f44"/><circle cx="112" cy="75" r="4" fill="%230a2f44"/><path d="M85,95 Q100,105 115,95" stroke="%230a2f44" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M70,60 Q100,30 130,60 Q120,45 100,42 Q80,45 70,60" fill="%234a2c1a"/><path d="M60,140 Q100,120 140,140 L150,180 L50,180 Z" fill="%233e8fb0" opacity="0.9"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Panel 4 — Aksi / ledakan */
+        .panel-4 .panel-art {
+            background: radial-gradient(circle at 50% 50%, #fff8e0 0%, #ffcf6b 40%, #e86a3c 100%);
+            position: relative;
+        }
+
+        .panel-4 .panel-art::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M100,100 L70,30 L110,80 L160,20 L130,90 L190,100 L130,110 L170,170 L110,120 L100,190 L90,120 L30,170 L70,110 L10,100 L70,90 L30,30 L90,80 Z" fill="%23ffffff" opacity="0.85"/><path d="M100,100 L80,50 L110,85 L145,40 L125,95 L170,100 L125,105 L150,150 L110,115 L100,165 L90,115 L50,150 L75,105 L30,100 L75,95 L50,50 L90,85 Z" fill="%23e86a3c" opacity="0.7"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Panel 5 — Siluet pesisir */
+        .panel-5 .panel-art {
+            background: linear-gradient(180deg, #f7b267 0%, #f79d65 25%, #c96f4a 55%, #7c3d4a 100%);
+            position: relative;
+        }
+
+        .panel-5 .panel-art::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="90" r="35" fill="%23fff3c8" opacity="0.9"/><rect x="0" y="130" width="200" height="70" fill="%230a3b52" opacity="0.95"/><path d="M40,130 L50,100 L60,130 Z" fill="%230a2f44"/><path d="M130,130 L145,90 L160,130 Z" fill="%230a2f44"/><rect x="85" y="115" width="8" height="15" fill="%230a2f44"/><ellipse cx="89" cy="112" rx="12" ry="4" fill="%230a2f44"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Panel 6 — Close up mata */
+        .panel-6 .panel-art {
+            background: radial-gradient(circle at 50% 50%, #b6e6f7 0%, #4aa3c7 50%, #0a3b52 100%);
+            position: relative;
+        }
+
+        .panel-6 .panel-art::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="100" rx="70" ry="40" fill="%23ffffff"/><circle cx="100" cy="100" r="30" fill="%23266e91"/><circle cx="100" cy="100" r="18" fill="%230a2f44"/><circle cx="92" cy="92" r="6" fill="%23ffffff" opacity="0.9"/><circle cx="108" cy="108" r="3" fill="%23ffffff" opacity="0.7"/><path d="M30,100 Q50,60 100,60 Q150,60 170,100" stroke="%230a2f44" stroke-width="4" fill="none"/><path d="M30,100 Q50,140 100,140 Q150,140 170,100" stroke="%230a2f44" stroke-width="4" fill="none"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Panel 7 — Peta harta karun */
+        .panel-7 .panel-art {
+            background: linear-gradient(135deg, #f5e6c8 0%, #e8d4a8 50%, #d4b483 100%);
+            position: relative;
+        }
+
+        .panel-7 .panel-art::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M20,30 Q80,50 100,80 T180,90" stroke="%230a3b52" stroke-width="2" fill="none" stroke-dasharray="6,4"/><path d="M40,170 Q60,140 90,150 T150,120" stroke="%230a3b52" stroke-width="2" fill="none" stroke-dasharray="6,4"/><circle cx="140" cy="60" r="10" fill="none" stroke="%23c0392b" stroke-width="3"/><path d="M140,50 L140,70 M130,60 L150,60" stroke="%23c0392b" stroke-width="3"/><text x="30" y="100" font-family="serif" font-size="14" fill="%230a3b52" opacity="0.7">⚓</text></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Panel 8 — Bulan & laut */
+        .panel-8 .panel-art {
+            background: linear-gradient(180deg, #0a2f44 0%, #1a5a78 50%, #3e8fb0 100%);
+            position: relative;
+        }
+
+        .panel-8 .panel-art::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="140" cy="50" r="25" fill="%23fff8dc" opacity="0.95"/><circle cx="148" cy="45" r="22" fill="%230a2f44" opacity="0.15"/><path d="M0,140 Q40,130 80,140 T160,138 L200,145 L200,200 L0,200 Z" fill="%23001c2c" opacity="0.9"/><path d="M0,155 Q50,145 100,155 T200,152 L200,200 L0,200 Z" fill="%23000d16" opacity="0.9"/><circle cx="50" cy="30" r="1.5" fill="%23ffffff"/><circle cx="80" cy="55" r="1.5" fill="%23ffffff"/><circle cx="30" cy="70" r="1.5" fill="%23ffffff"/><circle cx="170" cy="90" r="1.5" fill="%23ffffff"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Efek nomor panel komik */
+        .panel-number {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #0a2f44;
+            color: #ffffff;
+            font-family: 'Bangers', cursive;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 2px solid #ffffff;
+            z-index: 3;
+            box-shadow: 3px 3px 0 rgba(10, 59, 82, 0.7);
+        }
+
+        /* Balon bicara */
+        .speech-bubble {
+            position: absolute;
+            background: #ffffff;
+            color: #0a2f44;
+            padding: 8px 12px;
+            border-radius: 18px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            font-family: 'Bangers', cursive;
+            letter-spacing: 1px;
+            border: 3px solid #0a2f44;
+            z-index: 4;
+            box-shadow: 3px 3px 0 rgba(10, 59, 82, 0.5);
+            max-width: 80%;
+            line-height: 1.2;
+        }
+
+        .speech-bubble::after {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 14px solid #0a2f44;
+        }
+
+        .speech-bubble::before {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 22px;
+            width: 0;
+            height: 0;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-top: 12px solid #ffffff;
+            z-index: 1;
+        }
+
+        .bubble-top-right {
+            top: 15px;
+            right: 15px;
+        }
+
+        .bubble-top-right::after {
+            left: auto;
+            right: 20px;
+        }
+
+        .bubble-top-right::before {
+            left: auto;
+            right: 22px;
+        }
+
+        .bubble-bottom-left {
+            bottom: 20px;
+            left: 15px;
+        }
+
+        /* Efek suara komik */
+        .sound-effect {
+            position: absolute;
+            font-family: 'Bangers', cursive;
+            color: #ffe066;
+            -webkit-text-stroke: 2px #0a2f44;
+            text-shadow: 4px 4px 0 #e86a3c;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            transform: rotate(-12deg);
+            z-index: 4;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: rotate(-12deg) scale(1);
+            }
+
+            50% {
+                transform: rotate(-12deg) scale(1.08);
+            }
+        }
+
+        .sfx-1 {
+            top: 30%;
+            right: 10%;
+        }
+
+        .sfx-2 {
+            bottom: 25%;
+            left: 12%;
+            transform: rotate(8deg);
+        }
+
+        .sfx-2 {
+            animation-delay: 0.4s;
+        }
+
+        /* Keterangan bawah */
+        .caption {
+            max-width: 1100px;
+            margin: 3rem auto 0;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: #c6e8f7;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 5;
+            padding: 1rem 2rem;
+            background: rgba(10, 47, 68, 0.5);
+            backdrop-filter: blur(8px);
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .caption::before {
+            content: "🌊 ";
+        }
+
+        .caption::after {
+            content: " 🌊";
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .comic-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+
+            .sound-effect {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 520px) {
+            body {
+                padding: 2rem 1rem;
+            }
+
+            .comic-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                letter-spacing: 2px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Bintang dekoratif -->
+    <div class="sea-stars" id="seaStars"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <h1>PANEL KOMIK</h1>
+        <p>karya Laurance Nicolas</p>
+    </header>
+
+    <!-- Grid Panel Komik -->
+    <main class="comic-grid">
+
+        <!-- Panel 1 — Perahu di ombak -->
+        <div class="panel panel-1">
+            <span class="panel-number">01</span>
+            <div class="panel-art"></div>
+            <div class="speech-bubble bubble-top-right">Ayo berlayar!</div>
+        </div>
+
+        <!-- Panel 2 — Bawah laut -->
+        <div class="panel panel-2">
+            <span class="panel-number">02</span>
+            <div class="panel-art"></div>
+            <div class="speech-bubble bubble-bottom-left">Dunia baru...</div>
+        </div>
+
+        <!-- Panel 3 — Karakter utama -->
+        <div class="panel panel-3">
+            <span class="panel-number">03</span>
+            <div class="panel-art"></div>
+        </div>
+
+        <!-- Panel 4 — Aksi ledakan -->
+        <div class="panel panel-4">
+            <span class="panel-number">04</span>
+            <div class="panel-art"></div>
+            <div class="sound-effect sfx-1">BOOM!</div>
+        </div>
+
+        <!-- Panel 5 — Siluet pesisir -->
+        <div class="panel panel-5">
+            <span class="panel-number">05</span>
+            <div class="panel-art"></div>
+        </div>
+
+        <!-- Panel 6 — Close up mata -->
+        <div class="panel panel-6">
+            <span class="panel-number">06</span>
+            <div class="panel-art"></div>
+            <div class="sound-effect sfx-2">GASP!</div>
+        </div>
+
+        <!-- Panel 7 — Peta harta karun -->
+        <div class="panel panel-7">
+            <span class="panel-number">07</span>
+            <div class="panel-art"></div>
+            <div class="speech-bubble bubble-bottom-left" style="max-width: 90%; font-size: 0.7rem;">Harta karun ada di
+                sini!</div>
+        </div>
+
+        <!-- Panel 8 — Bulan & laut -->
+        <div class="panel panel-8">
+            <span class="panel-number">08</span>
+            <div class="panel-art"></div>
+        </div>
+
+    </main>
+
+    <!-- Keterangan -->
+    <p class="caption">"Samudra Terakhir" — komik seri karya Laurance Nicolas</p>
+
+    <!-- Script bintang dekoratif -->
+    <script>
+        (function () {
+            const container = document.getElementById('seaStars');
+            const symbols = ['✦', '✧', '⋆', '･', '✩'];
+            const count = 25;
+
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('span');
+                star.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.fontSize = (Math.random() * 16 + 8) + 'px';
+                star.style.animationDelay = (Math.random() * 4) + 's';
+                star.style.animationDuration = (Math.random() * 4 + 3) + 's';
+                star.style.color = Math.random() > 0.5 ? '#aae0ff' : '#ffffff';
+                container.appendChild(star);
+            }
+        })();
+    </script>
+
+</body>
+
+</html>
